@@ -1,19 +1,23 @@
+import uuid
+
 def Create(db, usr, pd):
     cur = db.cursor()
     # Create a user
+    usrID = str(uuid.uuid4())
     cur.execute("""
         INSERT INTO users VALUES
         (
             ?,
+            ?,
             ?
-        );""", [usr, pd])
+        );""", [usrID, usr, pd])
     # print(res.fetchone())
     print ("built a user")
 
 def ListUsers(db):
     cur = db.cursor()
     res = cur.execute ("""
-        SELECT userID FROM users;             
+        SELECT userID, name FROM users;             
     """)
     
     for x in res.fetchall():
@@ -27,7 +31,7 @@ def Login(db, usr, pd):
     FROM
         users
     WHERE
-        userID = ? AND
+        name = ? AND
          password = ?;
     """, [usr, pd])
     return res.fetchone()[0]

@@ -6,6 +6,7 @@ def Migration():
     cur.execute("""
     CREATE TABLE IF NOT EXISTS users (
         userID TEXT PRIMARY KEY,
+        name TEXT,
         password TEXT
     );""")
     cur.execute("""
