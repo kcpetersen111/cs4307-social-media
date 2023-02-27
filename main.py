@@ -1,17 +1,26 @@
 #!/usr/bin/env python3
 import dbSetup
+import user
 
 def main():
     db = dbSetup.Migration()
+    
+    # will be the userID once logged in but should make sure that is not null
+    usr = None
 
     print("Welcome to a nother social media\n")
     while True:
         print()
-        ui = input("What do you want to do?\n> ")
-        if(ui == "exit"):
+        ui = input("What do you want to do?\n> ").lower().split() 
+        ui = ui if len(ui)!=0 else ["ThisIsAMagicNumberToMakeSureNothingCrashesAndIDontWantToComeUpWithABetterIdea","ThatHas","EnoughStuffForTheChecks"]
+        
+        if(ui[0] == "exit"):
             db.close()
             quit(0)
-        
+        elif (ui[0] == "user" and ui[1] == "create"):
+            user.Create(db, ui[2], ui[3])
+        elif (ui[0] == "user" and ui[1] == "list"):
+            user.ListUsers(db)
         else:
             print("That is an unknown command")
         
