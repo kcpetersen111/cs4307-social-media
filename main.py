@@ -18,9 +18,17 @@ def main():
             db.close()
             quit(0)
         elif (ui[0] == "user" and ui[1] == "create"):
+            if (len(ui) != 4):
+                print("Not enough arguments")
+                continue
             user.Create(db, ui[2], ui[3])
         elif (ui[0] == "user" and ui[1] == "list"):
             user.ListUsers(db)
+        elif (ui[0] == "user" and ui[1] == "login"):
+            if (len(ui) != 4):
+                print("Not enough arguments")
+                continue
+            usr = user.Login(db, ui[2], ui[3])
         else:
             print("That is an unknown command")
         

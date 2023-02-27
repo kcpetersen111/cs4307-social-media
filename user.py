@@ -1,4 +1,4 @@
-def Create(db, usr, password):
+def Create(db, usr, pd):
     cur = db.cursor()
     # Create a user
     cur.execute("""
@@ -6,7 +6,7 @@ def Create(db, usr, password):
         (
             ?,
             ?
-        );""", [usr, password])
+        );""", [usr, pd])
     # print(res.fetchone())
     print ("built a user")
 
@@ -18,3 +18,17 @@ def ListUsers(db):
     
     for x in res.fetchall():
         print(x)
+
+def Login(db, usr, pd):
+    cur = db.cursor()
+    res = cur.execute("""
+    SELECT 
+        userID
+    FROM
+        users
+    WHERE
+        userID = ? AND
+         password = ?;
+    """, [usr, pd])
+    return res.fetchone()[0]
+    
