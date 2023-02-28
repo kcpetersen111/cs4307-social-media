@@ -12,7 +12,6 @@ def Create(db, usr, cont):
             ?,
             ?
         );""", [usr, cont, "I don't", "know what", "this is for"])
-    # print(res.fetchone())
     print ("created ", cont)
 
 def SwitchContext(db, usr, cont):
@@ -31,7 +30,7 @@ def SwitchContext(db, usr, cont):
     except:
         return None
 
-def seeFeed(db, usr, cont):
+def SeeFeed(db, usr, cont):
     cur = db.cursor()
     res = cur.execute("""
     SELECT 
@@ -42,11 +41,11 @@ def seeFeed(db, usr, cont):
             toContext = context
     WHERE
         fromUserID = ? AND
-        fromContext = ?;
+        fromContext = ?
     ORDER BY
         timeStamp DESC
     LIMIT
-        10
+        10;
     """, [usr, cont])
 
     for x in res.fetchall():
@@ -64,6 +63,25 @@ def Post(db, usr, cont, data):
             ?,
             ?
         );""", [usr, cont, datetime.datetime.now(), ' '.join(data), postID])
-    # print(res.fetchone())
     print ("posted")
 
+def Follow(db, usr, cont, otherUsr, otherCont):
+    cur = db.cursor()
+    cur.execute("""
+        INSERT INTO follows VALUES
+        (
+            ?,
+            ?,
+            ?,
+            ?
+        );""", [usr, cont, otherUsr,otherCont])
+    print ("following ", usr)
+
+def List(db, usr):
+    cur = db.cursor()
+    res = cur.execute ("""
+        SELECT context FROM accounts WHERE userID = ?;             
+    """, [usr])
+    
+    for x in res.fetchall():
+        print(x)

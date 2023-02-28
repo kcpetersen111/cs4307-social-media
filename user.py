@@ -23,6 +23,18 @@ def ListUsers(db):
     for x in res.fetchall():
         print(x)
 
+def GetName(db, usr):
+    cur = db.cursor()
+    res = cur.execute("""
+    SELECT 
+        name
+    FROM
+        users
+    WHERE
+        userID = ?
+    """, [usr])
+    return res.fetchone()[0]
+    
 def Login(db, usr, pd):
     cur = db.cursor()
     res = cur.execute("""
