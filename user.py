@@ -35,4 +35,3 @@ def Login(db, usr, pd):
          password = ?;
     """, [usr, pd])
     return res.fetchone()[0]
-    
