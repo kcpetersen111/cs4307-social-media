@@ -1,4 +1,5 @@
-import datetime
+# import datetime
+import time
 import uuid
 
 def Create(db, usr, cont):
@@ -34,7 +35,7 @@ def SeeFeed(db, usr, cont):
     cur = db.cursor()
     res = cur.execute("""
     SELECT 
-        timeStamp, context, data
+        timeStamp, context, data, postID
     FROM
         follows JOIN post ON 
             toUserID = userID AND
@@ -62,7 +63,7 @@ def Post(db, usr, cont, data):
             ?,
             ?,
             ?
-        );""", [usr, cont, datetime.datetime.now(), ' '.join(data), postID])
+        );""", [usr, cont, time.time(), ' '.join(data), postID])
     print ("posted")
 
 def Follow(db, usr, cont, otherUsr, otherCont):
@@ -85,3 +86,43 @@ def List(db, usr):
     
     for x in res.fetchall():
         print(x)
+
+def Comment(db, usr, cont, postId, msg):
+    cur = db.cursor()
+    comId = str(uuid.uuid4())
+    res = cur.execute("""
+        INSERT INTO comment VALUES
+        (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?
+        );      
+        """,[usr,cont,postId,comId,msg, time.time()]) 
+    
+    # not done yet
+def SeePost(db,pid):
+    cur = db.cursor()
+    res = cur.execute("""
+        SELECT 
+            timeStamp, context, data, postID
+        FROM post
+        WHERE post.postId = ?;   
+        """, [pid])
+    # Prints off the post before the comments
+    for x in res.fetchall():
+        print(x)
+    print()
+    res = cur.execute("""
+        SELECT 
+            users.name, comment.data, comment.timeStamp
+        FROM post
+        JOIN comment ON comment.postId = post.postId 
+        JOIN users ON comment.userID = users.userID
+        WHERE post.postId = ?;   
+        """, [pid])
+    for x in res.fetchall():
+        print("User:",x[0],"\nMessage:",x[1],"\nTimestamp:",x[2])
+        print()

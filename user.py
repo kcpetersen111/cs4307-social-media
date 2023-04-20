@@ -33,7 +33,10 @@ def GetName(db, usr):
     WHERE
         userID = ?
     """, [usr])
-    return res.fetchone()[0]
+    usr = res.fetchone()
+    if usr == None:
+        return None
+    return usr[0]
     
 def Login(db, usr, pd):
     cur = db.cursor()
