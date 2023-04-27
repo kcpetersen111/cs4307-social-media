@@ -1,0 +1,17 @@
+user create j k
+user login j k
+context create test
+context switch test
+post hello
+post how 
+post are 
+post you
+context create test2
+context switch test2 
+post test2
+user create s l
+user login s l
+context create second
+context switch second
+fall j
+see feed

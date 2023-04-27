@@ -90,6 +90,10 @@ def main():
             elif (ui[0] == "see" and ui[1] == "post"):
                 if (checkLogedin() and checkContext() and checkUiLength(ui,3)):
                     context.SeePost(db,ui[2])
+            elif (ui[0] == "fall"):
+                if (checkLogedin() and checkContext() and checkUiLength(ui,2)):
+                    context.followAll(db,usr,cont,ui[1])
+                    
             elif(ui[0]=="sql"):
                 c = db.cursor()
                 res = c.execute(" ".join(ui[1:]))

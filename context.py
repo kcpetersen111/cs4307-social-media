@@ -126,3 +126,17 @@ def SeePost(db,pid):
     for x in res.fetchall():
         print("User:",x[0],"\nMessage:",x[1],"\nTimestamp:",x[2])
         print()
+             
+def followAll(db,userId, userCont, otherName):
+    cur = db.cursor()
+    
+    cur.execute("""
+        INSERT INTO follows 
+            SELECT u1.userID, ?, u2.userID, a.context
+            FROM users as u1
+            join users as u2 on u2.name = ?
+            join accounts as a on a.userID = u2.userID
+            WHERE u1.userID = ?
+            ;     
+    """, [userCont, otherName, userId])
+    db.commit()
